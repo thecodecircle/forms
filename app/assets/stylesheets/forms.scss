@@ -1,0 +1,39 @@
+// Place all the styles related to the forms controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+@import "./mixins.scss";
+.form {
+  padding: 0 1rem 1rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  @include big {
+    width: 40%;
+  }
+
+  legend,
+  label {
+    font-size: 1.3rem;
+  }
+  legend {
+    margin: 0.5em 0 0.2em 0;
+  }
+  textarea {
+    height: 10rem;
+  }
+
+  fieldset {
+    border: 0;
+  }
+  h2 {
+    font-size: 2rem;
+    line-height: 1;
+    small {
+      font-size: 1.5rem;
+    }
+  }
+}
+.test {
+  height: 100px;
+  width: 100%;
+  background: red;
+}

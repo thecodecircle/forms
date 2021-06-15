@@ -1,0 +1,13 @@
+<%= simple_form_for(@form) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <div class="form-inputs ">
+    <%= f.input :url %>
+    <%= f.input :creator %>
+    <%= f.input :font, collection: Form.fonts.keys.map{|f| [Form.heb_fonts(f), f]}, as: :radio_buttons %>
+    <%= f.rich_text_area :thanks %>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

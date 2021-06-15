@@ -1,0 +1,160 @@
+<% provide(:title, @json.title) %>
+<script type="text/javascript">
+  var submitted= false;
+</script>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {window.location = '<%= thanks_form_path(@form) %>'}"></iframe>
+<div class="form <%= @form.font %>">
+  <%# @html.to_s.sub('target="_self"', 'target="hidden_iframe" onsubmit="submitted=true;"').html_safe %>
+  <form action="https://docs.google.com<%= @json.path %>/d/<%= @json.action %>/formResponse"
+      target="hidden_iframe"
+      id="bootstrapForm"
+      method="POST">
+    <% if @json.title.present? %>
+      <fieldset>
+        <h2><%= @json.title %><br>
+          <small><%= @json.desc %></small></h2>
+      </fieldset>
+    <% end %>
+    <% if @json.askEmail.present? %>
+      <fieldset>
+        <legend for="<%= @json.emailAddress %>">Email</legend>
+        <div class="form-group">
+          <input id="emailAddress" type="email" name="emailAddress" class="form-control" required>
+        </div>
+      </fieldset>
+    <% end %>
+    <% @json.fields.each do |f| %>
+      <% next if f.widgets == nil %>
+      <!-- emptyline -->
+      <!-- emptyline -->
+      <!-- Field type: "<%= field_types[f.typeid] %>" id: "<%= f.id %>" -->
+      <fieldset>
+        <legend for="<%= f.id %>"><%= f.label %></legend>
+        <div class="form-group">
+          <% if f.desc.present? %>
+           <p class="help-block"><%= f.desc  %></p>
+          <% end %>
+          <% if field_types[f.typeid] == 'short' %>
+            <input id="<%= f.widgets[0].id %>" type="text" name="entry.<%= f.widgets[0].id %>" class="form-control" <%= "required" if f.widgets[0].required %>>
+          <% end %>
+          <% if field_types[f.typeid] == 'paragraph' %>
+            <textarea id="<%= f.widgets[0].id %>" name="entry.<%= f.widgets[0].id %>" class="form-control"  <%= "required" if f.widgets[0].required %>></textarea>
+          <% end %>
+          <% if field_types[f.typeid] == 'choices' %>
+            <% f.widgets[0].option.each do |c| %>
+              <div class="radio">
+                <% if c.custom %>
+                  <label>
+                    <input type="radio" name="entry.<%= f.widgets[0].id %>" value="__other_option__"  <%= "required" if f.widgets[0].required %>>
+                  </label>
+                  <input type="text" name="entry.<%= f.widgets[0].id %>.other_option_response" placeholder="custom value">
+                <% else %>
+                  <label>
+                    <input type="radio" name="entry.<%= f.widgets[0].id %>" value="<%=c.label %>"  <%= "required" if f.widgets[0].required %>>
+                    <%= c.label %>
+                  </label>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+          <% if field_types[f.typeid] == 'checkboxes' %>
+          <% f.widgets[0].options.each do |c| %>
+          <div class="checkbox">
+            <% if c.custom %>
+            <label>
+              <input type="checkbox" name="entry.<%= f.widgets[0].id %>" value="__other_option__"  <%= "required" if f.widgets[0].required %>>
+            </label>
+            <input type="text" name="entry.<%= f.widgets[0].id %>.other_option_response" placeholder="custom value">
+            <% else %>
+            <label>
+              <input type="checkbox" name="entry.<%= f.widgets[0].id %>" value="<%= c.label %>"  <%= "required" if f.widgets[0].required %>>
+              <%= c.label %>
+            </label>
+            <% end %>
+          </div>
+          <% end %>
+
+
+          
+          <% end %>
+          <% if field_types[f.typeid] == 'dropdown' %>
+          <select id="<%= f.id %>" name="entry.<%= f.widgets[0].id %>" class="form-control">
+            <% unless f.widgets[0].required %>
+            <option value=""></option>
+            <% end %>
+            <% f.widgets[0].options.each do |c| %>
+            < option value="<%= c.label %>"><%= c.label %></option>
+            <% end %>
+          </select>
+          <% end %>
+          <% if field_types[f.typeid] == 'linear' %>
+          <div>
+            <% f.widgets[0].options.each |c| %>
+            <label class="radio-inline">
+              <input type="radio" name="entry.<%= f.widgets[0].id %>" value="<%= c.label %>"  <%= "required" if f.widgets[0].required %>>
+              <%= c.label %>
+            </label>
+            <% end %>
+          </div>
+          <div>
+            <div><%= legend f.widgets[0].options 0  %>: <%= f.widgets[0].legend.first  %></div>
+            <div><%= legend f.widgets[0].options 1  %>: <%= f.widgets[0].legend.last  %></div>
+          </div>
+          <% end %>
+          <% if field_types[f.typeid] == 'grid' %>
+          <% f.widgets.each do |w| %>
+          <div>
+            <span><%=w.name %>: </span>
+            <% columns.each do |c| %>
+            <label class="radio-inline">
+              <input type="radio" name="entry.<%=w.id %>" value="<%=c.label %>" <%= "required" if w.required %>>
+              <%= c.label %>
+            </label>
+            <% end %>
+          </div>
+          <% end %>
+          <% end %>
+          <% if field_types[f.typeid] == 'title'  %>
+          <% end %>
+          <% if field_types[f.typeid] == 'section'  %>
+          <% end %>
+          <% if field_types[f.typeid] == 'date'  %>
+          <input type="date" id="<%= f.widgets[0].id %>_date" placeholder="<%= datePlaceholder  %>" class="form-control"  <%= "required" if f.widgets[0].required %>>
+          <% if f.widgets[0].options.time %>
+          <input type="time" id="<%= f.widgets[0].id %>_time" placeholder="<%= timePlaceholder  %>" class="form-control"  <%= "required" if f.widgets[0].required %>>
+          <% end %>
+          <% end %>
+          <% if field_types[f.typeid] == 'time' %>
+          <input type="time" id="<%= f.widgets[0].id %>" placeholder="<%= timePlaceholder  %>" class="form-control"  <%= "required" if f.widgets[0].required %>>
+          <% end %>
+          <% if field_types[f.typeid] == 'image' %>
+          <% if f.widgets[0].src %>
+          <img src="<%= f.widgets[0].src %>" style="max-width: 100%;">
+          <% end %>
+          <% end %>
+          <% if field_types[f.typeid] == 'video' %>
+          <% if f.widgets[0].src %>
+          <iframe src="<%= f.widgets[0].src %>" style="width: 320px; height: 180px;"></iframe>
+          <% end %>
+          <% end %>
+          <% if field_types[f.typeid] == 'upload' %>
+          <div>File upload is not yet implemented. Any help is welcome!</div>
+          <% end %>
+        </div>
+      </fieldset>
+      <% end %>
+    <% end %>
+    <!-- emptyline -->
+    <input type="hidden" name="fvv" value="1">
+    <input type="hidden" name="fbzx" value="<%= @json.fbzx %>">
+    <!--
+        CAVEAT: In multipages (multisection) forms, *pageHistory* field tells to google what sections we've currently completed.
+        This usually starts as "0" for the first page, then "0,1" in the second page... up to "0,1,2..N" in n-th page.
+        Keep this in mind if you plan to change this code to recreate any sort of multipage-feature in your exported form.
+        We're setting this to the total number of pages in this form because we're sending all fields from all the section together.
+    -->
+    <input type="hidden" name="pageHistory" value="<%= @json.sectionCount  %>">
+    <!-- emptyline -->
+    <input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+</div>

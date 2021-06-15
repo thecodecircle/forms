@@ -1,0 +1,67 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+@import "./actiontext.scss";
+@import "./mixins.scss";
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+$fonts: (
+  "alef": "Alef",
+  "heebo": "Heebo",
+  "rubik": "Rubik",
+  "assistant": "Assistant",
+  "miriam_libre": "Miriam Libre",
+);
+
+@each $lowerCase, $upperCase in $fonts {
+  label[for="form_font_#{$lowerCase}"] {
+    font-family: $upperCase, sans-serif;
+    font-size: 1rem;
+  }
+  .#{$lowerCase} {
+    font-family: $upperCase, sans-serif !important;
+    *,
+    *::before,
+    *::after {
+      font-family: $upperCase, sans-serif !important;
+    }
+  }
+}
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #0004;
+  padding: 1rem;
+  font-size: 1rem;
+  @include big {
+    /* width: 40%; */
+  }
+}
