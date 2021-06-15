@@ -8,6 +8,7 @@
 #  payload    :json
 #  slug       :string
 #  url        :string
+#  uuid       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -17,9 +18,12 @@
 #
 class Form < ApplicationRecord
     extend FriendlyId
-    friendly_id :url, use: :slugged
+    friendly_id :uuid, use: :slugged
+    validates :url, presence: true
+    validates :uuid, uniqueness: true
 
     has_rich_text :thanks
+    
     enum font: [
         :alef,
         :rubik,

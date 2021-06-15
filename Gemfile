@@ -47,7 +47,6 @@ group :development do
   gem 'guard-livereload', require: false
   gem 'rack-livereload'
   gem 'annotate'
-  gem 'htmlbeautifier'
 end
 
 group :test do

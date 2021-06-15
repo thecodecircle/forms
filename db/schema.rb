@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_15_073348) do
+ActiveRecord::Schema.define(version: 2021_06_15_193414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_073348) do
     t.string "slug"
     t.integer "font"
     t.json "payload"
+    t.string "uuid"
     t.index ["slug"], name: "index_forms_on_slug", unique: true
   end
 

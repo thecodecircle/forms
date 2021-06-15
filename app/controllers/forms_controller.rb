@@ -39,11 +39,14 @@ class FormsController < ApplicationController
     params = { url: @form.url }
     uri.query = URI.encode_www_form(params)
     res = Net::HTTP.get_response(uri)
-    @form.payload = res.body if res.is_a?(Net::HTTPSuccess)
-
+    @form.payload = res.body.force_encoding('UTF-8') if res.is_a?(Net::HTTPSuccess)
+    @form.uuid = SecureRandom.hex(5)
     respond_to do |format|
+      while !@form.save
+        @form.uuid = SecureRandom.hex(5)
+      end
       if @form.save
-        format.html { redirect_to @form, notice: "Form was successfully created." }
+        format.html { redirect_to edit_form_path(@form), notice: "Form was successfully created." }
         format.json { render :show, status: :created, location: @form }
       else
         format.html { render :new, status: :unprocessable_entity }

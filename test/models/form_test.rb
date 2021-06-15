@@ -8,6 +8,7 @@
 #  payload    :json
 #  slug       :string
 #  url        :string
+#  uuid       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
