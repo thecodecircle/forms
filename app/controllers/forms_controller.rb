@@ -8,14 +8,7 @@ class FormsController < ApplicationController
 
   # GET /forms/1 or /forms/1.json
   def show
-   
-    # scrubber = Rails::Html::TargetScrubber.new
-    # scrubber.tags = ['script']
-
-    # @html = Loofah.fragment(@form.html)
-    # @html.scrub!(scrubber)
     @json = JSON.parse(@form.payload, object_class: OpenStruct)
-    # @json = JSON.parse(@form.payload)
   end
 
   def thanks
@@ -29,6 +22,7 @@ class FormsController < ApplicationController
 
   # GET /forms/1/edit
   def edit
+    @json = JSON.parse(@form.payload, object_class: OpenStruct)
   end
 
   # POST /forms or /forms.json

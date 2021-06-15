@@ -62,3 +62,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "simple_form", "~> 5.1"
 gem 'friendly_id', '~> 5.4.0'
+gem "stimulus_reflex", "~> 3.4"

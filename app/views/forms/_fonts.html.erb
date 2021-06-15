@@ -1,0 +1,7 @@
+  <% Form.fonts.keys.each do |font| %>
+  <li class='<%= font %>'>
+    <%= radio_button_tag :font, font, form.font == font, data: {reflex: "change->Form#font", form: form.id} %>
+    <%# radio_button(:form, :font, font) %>
+    <%= Form.heb_fonts(font) %>
+  </li>
+<% end %>
